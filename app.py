@@ -100,9 +100,12 @@ if submitted:
             input_scaled = scaler.transform(input_df)
             pred = model.predict(input_scaled)
             
+            result_label = label_encoder.inverse_transform(pred)[0]
             # Get result
             result_label = label_mapping.get(int(pred[0]), "Tidak diketahui")
+            # Get result (tanpa label_mapping)
             
+
             # Calculate BMI
             bmi = weight / (height ** 2)
             
@@ -114,7 +117,9 @@ if submitted:
             with col1:
                 st.metric("Indeks Massa Tubuh (BMI)", f"{bmi:.1f}")
             with col2:
-                st.metric("Kategori", result_label)
+                st.markdown("**Kategori**")
+                st.markdown(f"<div style='font-size: 20px; font-weight: bold;'>{result_label}</div>", unsafe_allow_html=True)
+
             
             # Add color-coded interpretation
             st.subheader("Interpretasi")
